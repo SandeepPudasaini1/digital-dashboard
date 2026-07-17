@@ -7,10 +7,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <style>
-/* ===========================================================
-   TOKENS — Scarlet / Cream / Charcoal (UNL CCFL inspired)
-   All text-on-background pairs meet WCAG AA contrast.
-=========================================================== */
 :root{
   --bg:            #FAF8F4;   /* warm off-white page background */
   --surface:       #FFFFFF;
@@ -74,10 +70,6 @@ button{font-family:inherit;}
   html{scroll-behavior:auto;}
   *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
 }
-
-/* ===========================================================
-   LAYOUT SHELL
-=========================================================== */
 .app{
   display:grid;
   grid-template-columns: 232px 1fr;
@@ -152,10 +144,6 @@ button{font-family:inherit;}
   margin:0 auto;
   padding:0 32px;
 }
-
-/* ===========================================================
-   HEADER
-=========================================================== */
 .page-header{
   background: linear-gradient(180deg, #FFFFFF 0%, var(--bg) 100%);
   border-bottom:3px solid var(--scarlet);
@@ -187,9 +175,6 @@ button{font-family:inherit;}
 .header-meta .meta-item .num{ font-size:19px; font-weight:700; color:var(--scarlet-dark); font-variant-numeric: tabular-nums; }
 .header-meta .meta-item .lab{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.04em; }
 
-/* ===========================================================
-   SECTION SCAFFOLD
-=========================================================== */
 section.block{ padding:28px 0; border-bottom:1px solid var(--border); }
 section.block:last-of-type{ border-bottom:none; }
 
@@ -212,9 +197,6 @@ section.block:last-of-type{ border-bottom:none; }
 .overview-card h3{ font-size:14px; margin-bottom:4px; }
 .overview-card p{ font-size:12.5px; color:var(--ink-soft); }
 
-/* ===========================================================
-   DASHBOARD CARDS
-=========================================================== */
 .dash-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -259,9 +241,6 @@ section.block:last-of-type{ border-bottom:none; }
 
 .chart-wrap{ position:relative; height:170px; }
 
-/* ===========================================================
-   DATA UPDATE NOTE
-=========================================================== */
 .update-note{
   background:var(--charcoal);
   border-left:4px solid var(--scarlet);
@@ -278,9 +257,6 @@ section.block:last-of-type{ border-bottom:none; }
 .update-note h3{ color:#fff; font-size:14.5px; margin-bottom:2px; }
 .update-note p{ font-size:12.5px; color:#D8CFC3; }
 
-/* ===========================================================
-   FOOTER
-=========================================================== */
 footer{
   background:var(--surface);
   border-top:1px solid var(--border);
@@ -293,9 +269,6 @@ footer{
 .footer-inner .f-sub{ font-size:12.5px; color:var(--ink-soft); max-width:420px; }
 .footer-inner .f-note{ font-size:11.5px; color:var(--ink-faint); }
 
-/* ===========================================================
-   RESPONSIVE
-=========================================================== */
 @media (max-width:1020px){
   .dash-grid{ grid-template-columns:1fr; }
   .overview-grid{ grid-template-columns:1fr; }
@@ -355,7 +328,6 @@ footer{
 <div class="scrim" id="scrim"></div>
 
 <div class="app">
-  <!-- ===================== SIDEBAR ===================== -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-mark">
@@ -391,10 +363,8 @@ footer{
     </div>
   </aside>
 
-  <!-- ===================== MAIN ===================== -->
   <div class="main">
 
-    <!-- HEADER -->
     <header class="page-header" id="overview">
       <div class="container">
         <span class="eyebrow">Digital Dashboards</span>
@@ -633,9 +603,7 @@ footer{
 </footer>
 
 <script>
-/* ===========================================================
-   MOBILE NAV
-=========================================================== */
+
 (function(){
   const sidebar = document.getElementById('sidebar');
   const menuBtn = document.getElementById('menuBtn');
@@ -650,7 +618,6 @@ footer{
     a.addEventListener('click', closeNav);
   });
 
-  /* Active link highlight on scroll */
   const links = Array.from(document.querySelectorAll('.sidebar a.navlink'));
   const targets = links.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
   const io = new IntersectionObserver((entries)=>{
@@ -776,9 +743,6 @@ function groupedBarChart(ctx, labels, seriesA, seriesB, labelA, labelB){
   });
 }
 
-/* ===========================================================
-   SAMPLE DATA + INIT
-=========================================================== */
 document.addEventListener('DOMContentLoaded', () => {
   barChart(document.getElementById('chart-snapshot'),
     ['2022','2023','2024','2025'], [1610, 1705, 1778, 1842]);
