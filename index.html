@@ -634,11 +634,6 @@ footer{
   targets.forEach(t => io.observe(t));
 })();
 
-/* ===========================================================
-   CHART.JS DEFAULTS + DATA LABELS
-   Palette avoids red/green pairing for colorblind accessibility:
-   scarlet + charcoal/slate + gold as the multi-series set.
-=========================================================== */
 Chart.register(ChartDataLabels);
 Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
 Chart.defaults.font.size = 10.5;
