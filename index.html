@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Dashboards Overview — Nebraska Homelessness Response</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f5f0;
+    --card: #ffffff;
+    --border: #e2e4dc;
+    --teal: #247061;        /* darkened from #2d8c7a for 4.5:1+ text contrast */
+    --teal-light: #e8f5f2;  /* decorative only, not used for text */
+    --teal-mid: #c2e4dd;
+    --text: #1a1f1c;
+    --muted: #5a6360;
+    --tag-lincoln: #dbeafe;
+    --tag-lincoln-text: #1e40af;
+    --accent-red: #C8102E;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+    --focus-ring: #124a3f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 20px 60px;
+  }
+
+  a.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--teal);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 0 0 8px 0;
+    z-index: 100;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  a.skip-link:focus {
+    left: 0;
+  }
+
+  .grid {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    gap: 16px;
+  }
+
+  .row-2 { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 640px) { .row-2 { grid-template-columns: 1fr; } }
+
+  .page-head {
+    max-width: 960px;
+    margin: 0 auto 24px;
+    padding: 4px 4px 22px;
+    border-bottom: 3px solid var(--accent-red);
+  }
+  .eyebrow {
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--teal); background:var(--teal-light);
+    padding:5px 11px; border-radius:999px; margin-bottom:14px;
+  }
+  .eyebrow::before{ content:''; width:5px;height:5px;border-radius:50%; background:var(--teal); }
+  h1.display {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.15;
+    color: var(--text);
+    max-width: 640px;
+  }
+  .page-head .lede {
+    margin-top: 12px;
+    max-width: 620px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .stat-row {
+    display: flex;
+    gap: 28px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-row .stat { display:flex; flex-direction:column; gap:1px; }
+  .stat-row .stat .num { font-family:'DM Serif Display', serif; font-size:22px; color:var(--teal); }
+  .stat-row .stat .lab { font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  /* Accordion trigger is a real <button> for keyboard + screen reader support */
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 18px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+  }
+  .card-header:hover { background: #fafbf9; }
+  .card-header:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: -3px;
+    background: #fafbf9;
+  }
+
+  .icon-wrap {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-teal { background: var(--teal-light); }
+  .icon-amber { background: #fef3c7; }
+  .icon-purple { background: #ede9fe; }
+  .icon-rose { background: #fce7f3; }
+  .icon-blue { background: #dbeafe; }
+  .icon-green { background: #dcfce7; }
+
+  .card-title-block { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+  }
+  .card-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  .lincoln-note {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: var(--tag-lincoln);
+    color: var(--tag-lincoln-text);
+    white-space: nowrap;
+  }
+
+  .chevron {
+    font-size: 10px;
+    color: var(--muted);
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .card.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .card.open .card-body { max-height: 500px; }
+
+  .card-inner {
+    padding: 0 18px 18px;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .card-inner p {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #2e3532;
+    margin-bottom: 10px;
+  }
+  .card-inner p:last-child { margin-bottom: 0; }
+  .card-inner p.note {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  strong { font-weight: 600; }
+
+  .banner-card {
+    background: var(--teal);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    color: #fff;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .banner-card .icon-wrap { background: rgba(255,255,255,0.22); }
+  .banner-card .card-title { color: #fff; }
+  .banner-card .card-sub { color: rgba(255,255,255,0.9); }
+  .banner-card p {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #ffffff;
+    margin-top: 8px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 8px 4px 2px;
+  }
+
+  footer {
+    max-width: 960px;
+    margin: 28px auto 0;
+    padding: 18px 4px 0;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  footer strong { color: var(--text); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-body, .chevron { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="page-head">
+  <span class="eyebrow">Digital Dashboards</span>
+  <h1 class="display">Digital Dashboards Overview</h1>
+  <p class="lede">
+    A quick overview of the dashboards that track homelessness and housing data across our
+    Continuums of Care. Each card below explains what a dashboard shows and how the information is used —
+    the live figures themselves are always available within the dashboards.
+  </p>
+  <div class="stat-row">
+    <div class="stat"><span class="num">10</span><span class="lab">Lincoln CoC dashboards</span></div>
+    <div class="stat"><span class="num">9</span><span class="lab">Balance of State CoC dashboards</span></div>
+    <div class="stat"><span class="num">Monthly</span><span class="lab">Automatic data refresh</span></div>
+  </div>
+</header>
+
+<main id="main-content" class="grid">
+
+  <!-- Row 1: What they measure + How data is used -->
+  <section class="grid row-2" aria-label="About the dashboards">
+    <div class="card open">
+      <h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">About the dashboards</h2>
+      <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-measure" onclick="toggle(this)">
+        <span class="icon-wrap icon-teal" aria-hidden="true">📊</span>
+        <span class="card-title-block">
+          <span class="card-title" id="title-measure">What the Dashboards Measure</span>
+          <span class="card-sub">One system, many angles</span>
+        </span>
+        <span class="chevron" aria-hidden="true">▼</span>
+      </button>
+      <div class="card-body" id="panel-measure" role="region" aria-labelledby="title-measure">
+        <div class="card-inner">
+          <p>Learn what each dashboard measures and how the data is calculated, to better understand
+          homelessness and housing outcomes across Nebraska.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card open">
+      <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-used" onclick="toggle(this)">
+        <span class="icon-wrap icon-rose" aria-hidden="true">🧭</span>
+        <span class="card-title-block">
+          <span class="card-title" id="title-used">How the Data Is Used</span>
+          <span class="card-sub">Planning &amp; coordination</span>
+        </span>
+        <span class="chevron" aria-hidden="true">▼</span>
+      </button>
+      <div class="card-body" id="panel-used" role="region" aria-labelledby="title-used">
+        <div class="card-inner">
+          <p>Explore up-to-date dashboards on homelessness trends, housing outcomes, coordinated entry,
+          program utilization, and community housing efforts across Nebraska.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monthly update banner -->
+  <section class="banner-card" aria-label="Update schedule">
+    <span class="icon-wrap" aria-hidden="true">🔄</span>
+    <div>
+      <h2 class="card-title">Updated Automatically, Every Month</h2>
+      <p class="card-sub">No manual delay between data collection and publishing</p>
+      <p>Each dashboard is updated automatically on a monthly schedule, so the figures reflect a recent,
+      consistent snapshot of activity.</p>
+    </div>
+  </section>
+
+  <h2 class="section-label">The Dashboards</h2>
+
+  <!-- 1. Snapshot of Homelessness -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-1" onclick="toggle(this)">
+      <span class="icon-wrap icon-teal" aria-hidden="true">📍</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-1">Snapshot of Homelessness</span>
+        <span class="card-sub">A monthly count of people experiencing homelessness</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-1" role="region" aria-labelledby="title-1">
+      <div class="card-inner">
+        <p>Shows the Annual Point-in-Time (PIT) count for the CoC as submitted through HDX 2.0, alongside
+        a monthly count of individuals experiencing homelessness.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Current Living Situations -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-2" onclick="toggle(this)">
+      <span class="icon-wrap icon-blue" aria-hidden="true">🏘️</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-2">Current Living Situations</span>
+        <span class="card-sub">Where clients are staying, by project type</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-2" role="region" aria-labelledby="title-2">
+      <div class="card-inner">
+        <p>Shows last month's Current Living Situation for each client, by project type &mdash; reported
+        for Street Outreach and Coordinated Entry only &mdash; presented through the Current Living
+        Situation HMIS Assessment.</p>
+        <p class="note">Note: The Balance of State CoC will not have Street Outreach (SO), so this
+        category reflects Lincoln only.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Program Exits to Permanent Housing -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-3" onclick="toggle(this)">
+      <span class="icon-wrap icon-green" aria-hidden="true">🔑</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-3">Program Exits to Permanent Housing</span>
+        <span class="card-sub">Clients exiting to permanent housing</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-3" role="region" aria-labelledby="title-3">
+      <div class="card-inner">
+        <p>Shows last month's exits to permanent housing only. Destination names are shortened for
+        clarity &mdash; for example, instead of "Living with Family in a permanent tenure," this is shown
+        simply as "Living with Family."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Housed in Supportive Housing Programs -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-4" onclick="toggle(this)">
+      <span class="icon-wrap icon-purple" aria-hidden="true">🏠</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-4">Housed in Supportive Housing Programs</span>
+        <span class="card-sub">Clients housed in a supportive housing program</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-4" role="region" aria-labelledby="title-4">
+      <div class="card-inner">
+        <p>Shows a count of individuals who came from a homeless situation and are currently housed in
+        one of the CoC's housing projects.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Street Outreach Efforts to Housing Placement -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-5" onclick="toggle(this)">
+      <span class="icon-wrap icon-amber" aria-hidden="true">🚶</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-5">Street Outreach Efforts to Housing Placement</span>
+        <span class="card-sub">Engagement through outreach services</span>
+      </span>
+      <span class="lincoln-note">Only in Lincoln</span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-5" role="region" aria-labelledby="title-5">
+      <div class="card-inner">
+        <p>Individuals engaged in Street Outreach services, including those who have subsequently
+        obtained housing.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Program Utilization -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-6" onclick="toggle(this)">
+      <span class="icon-wrap icon-teal" aria-hidden="true">📦</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-6">Program Utilization</span>
+        <span class="card-sub">How much of the housing inventory is in use</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-6" role="region" aria-labelledby="title-6">
+      <div class="card-inner">
+        <p>Shows the Annual Housing Inventory Count (HIC) for the CoC as submitted through HDX 2.0,
+        alongside current utilization.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Coordinated Entry Efforts to Housing Resolution -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-7" onclick="toggle(this)">
+      <span class="icon-wrap icon-rose" aria-hidden="true">🔗</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-7">Coordinated Entry Efforts to Housing Resolution</span>
+        <span class="card-sub">Families in Coordinated Entry &amp; how cases resolve</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-7" role="region" aria-labelledby="title-7">
+      <div class="card-inner">
+        <p>Total number of families in Coordinated Entry, and the outcomes of successful exits to
+        permanent housing, including CoC housing placements and self-resolutions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. First-Time Homelessness -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-8" onclick="toggle(this)">
+      <span class="icon-wrap icon-blue" aria-hidden="true">🆕</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-8">First-Time Homelessness</span>
+        <span class="card-sub">System Performance Measure 5.0</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-8" role="region" aria-labelledby="title-8">
+      <div class="card-inner">
+        <p>Based on System Performance Measure 5.0 (SPM 5.0), this shows how many individuals
+        experienced homelessness for the first time that month, with no homeless episode recorded in
+        HMIS within the past 24 months.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Rental Assistance -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-9" onclick="toggle(this)">
+      <span class="icon-wrap icon-green" aria-hidden="true">💰</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-9">Rental Assistance</span>
+        <span class="card-sub">Households, adults, and children receiving support</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-9" role="region" aria-labelledby="title-9">
+      <div class="card-inner">
+        <p>Part of Lincoln's Homeless Prevention and Supported Housing program. Tracks more than just
+        households &mdash; also the number of clients, adults, and children who received rental
+        assistance or are currently housed through the program.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Veterans Inflow & Outflow -->
+  <div class="card open">
+    <button type="button" class="card-header" aria-expanded="true" aria-controls="panel-10" onclick="toggle(this)">
+      <span class="icon-wrap icon-purple" aria-hidden="true">🎖️</span>
+      <span class="card-title-block">
+        <span class="card-title" id="title-10">Veterans Inflow &amp; Outflow</span>
+        <span class="card-sub">Veterans entering &amp; exiting housing</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="card-body" id="panel-10" role="region" aria-labelledby="title-10">
+      <div class="card-inner">
+        <p>Part of Lincoln's veteran housing programs. Shows veterans entering and exiting housing
+        projects each month, broken out by project type.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>Data for planning and community insights.</strong> Figures shown in the live dashboards are
+  updated automatically each month. This overview page is a concept summary and does not itself display
+  monthly figures &mdash; visit each dashboard directly for current numbers.</p>
+</footer>
+
+<script>
+  function toggle(button) {
+    var card = button.closest('.card');
+    var expanded = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!expanded));
+    card.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
